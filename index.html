@@ -1,0 +1,1398 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ภารกิจเกาะความรู้ ป.1-ป.2</title>
+  <style>
+    :root {
+      --ink: #143c3f;
+      --muted: #5c7375;
+      --paper: #fffdf6;
+      --mint: #d8fff4;
+      --sky: #dff3ff;
+      --sea: #18a6a6;
+      --leaf: #49b96f;
+      --sun: #ffd45d;
+      --rose: #ff6d82;
+      --blue: #3a86ff;
+      --line: rgba(20, 60, 63, .14);
+      --shadow: 0 18px 35px rgba(30, 120, 125, .18);
+      --radius: 8px;
+      font-family: "Noto Sans Thai", "Tahoma", system-ui, -apple-system, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 8%, rgba(255, 212, 93, .32), transparent 22rem),
+        radial-gradient(circle at 92% 12%, rgba(58, 134, 255, .16), transparent 20rem),
+        linear-gradient(180deg, #ecfbff 0%, #f8fff4 46%, #fffdf6 100%);
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: .55;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: .8rem clamp(1rem, 3vw, 2.4rem);
+      background: rgba(255, 253, 246, .86);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      min-width: 0;
+      font-weight: 900;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: conic-gradient(from 20deg, var(--sea), var(--leaf), var(--sun), var(--rose), var(--sea));
+      box-shadow: 0 7px 16px rgba(24, 166, 166, .24);
+      flex: 0 0 auto;
+    }
+
+    .brand svg {
+      width: 27px;
+      height: 27px;
+    }
+
+    .brand-title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .status-pills {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: .5rem;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      min-height: 34px;
+      padding: .25rem .65rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      font-size: .9rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      background: var(--leaf);
+    }
+
+    .dot.sun {
+      background: var(--sun);
+    }
+
+    .dot.rose {
+      background: var(--rose);
+    }
+
+    main {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      padding: clamp(1rem, 3vw, 2rem);
+      flex: 1;
+    }
+
+    .screen {
+      display: none;
+      animation: rise .25s ease-out;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr);
+      align-items: center;
+      gap: clamp(1rem, 4vw, 3rem);
+      padding: clamp(1rem, 3vw, 2rem) 0 1rem;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .35rem .7rem;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-weight: 800;
+      margin-bottom: .75rem;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 4.2rem);
+      line-height: 1.08;
+      margin-bottom: .9rem;
+    }
+
+    h2 {
+      font-size: clamp(1.45rem, 3vw, 2.35rem);
+      margin-bottom: .5rem;
+    }
+
+    .lead {
+      color: var(--muted);
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      line-height: 1.7;
+      max-width: 62ch;
+    }
+
+    .start-panel {
+      display: grid;
+      grid-template-columns: 1fr 170px 150px;
+      gap: .7rem;
+      max-width: 720px;
+      margin-top: 1.2rem;
+      padding: .65rem;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .field {
+      display: grid;
+      gap: .25rem;
+    }
+
+    .field label {
+      color: var(--muted);
+      font-size: .8rem;
+      font-weight: 800;
+      padding-left: .2rem;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      min-height: 46px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 0 .8rem;
+      color: var(--ink);
+      background: #fffdf6;
+      outline: none;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--sea);
+      box-shadow: 0 0 0 3px rgba(24, 166, 166, .14);
+    }
+
+    .primary-btn,
+    .secondary-btn,
+    .ghost-btn,
+    .choice-btn {
+      min-height: 46px;
+      border-radius: var(--radius);
+      font-weight: 900;
+      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease, background .16s ease;
+    }
+
+    .primary-btn {
+      color: #fff;
+      background: linear-gradient(135deg, var(--sea), var(--leaf));
+      box-shadow: 0 10px 22px rgba(24, 166, 166, .22);
+    }
+
+    .secondary-btn {
+      color: var(--ink);
+      background: var(--sun);
+      box-shadow: 0 10px 22px rgba(255, 212, 93, .28);
+    }
+
+    .ghost-btn {
+      color: var(--ink);
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+
+    .primary-btn:hover,
+    .secondary-btn:hover,
+    .ghost-btn:hover,
+    .choice-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .island-art {
+      width: 100%;
+      max-width: 540px;
+      justify-self: center;
+      filter: drop-shadow(0 20px 18px rgba(35, 126, 132, .16));
+    }
+
+    .mission-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(150px, 1fr));
+      gap: .85rem;
+      margin: 1.2rem 0 1.4rem;
+    }
+
+    .mission-card {
+      min-height: 180px;
+      display: grid;
+      align-content: space-between;
+      gap: .9rem;
+      padding: 1rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: #fff;
+      box-shadow: 0 12px 24px rgba(20, 60, 63, .08);
+      text-align: left;
+      color: var(--ink);
+    }
+
+    .mission-card:hover,
+    .mission-card:focus-visible {
+      box-shadow: var(--shadow);
+      outline: none;
+    }
+
+    .mission-icon {
+      width: 62px;
+      height: 62px;
+      border-radius: 20px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+    }
+
+    .mission-icon svg {
+      width: 36px;
+      height: 36px;
+    }
+
+    .mission-card strong {
+      display: block;
+      font-size: 1.1rem;
+      margin-bottom: .2rem;
+    }
+
+    .mission-card span {
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .mission-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: .5rem;
+      align-items: center;
+      font-size: .82rem;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .mini-progress {
+      height: 8px;
+      width: 74px;
+      border-radius: 999px;
+      background: #eef5f4;
+      overflow: hidden;
+    }
+
+    .mini-progress i {
+      display: block;
+      height: 100%;
+      width: 0;
+      border-radius: inherit;
+      background: var(--sea);
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: .8rem;
+    }
+
+    .game-wrap {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 1rem;
+      align-items: start;
+    }
+
+    .question-panel,
+    .side-panel,
+    .result-panel,
+    .info-strip {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: 0 14px 28px rgba(20, 60, 63, .08);
+    }
+
+    .question-panel {
+      padding: clamp(1rem, 3vw, 1.5rem);
+    }
+
+    .side-panel {
+      padding: 1rem;
+      position: sticky;
+      top: 82px;
+    }
+
+    .progress-row {
+      display: grid;
+      gap: .45rem;
+      margin-bottom: 1rem;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      color: var(--muted);
+      font-size: .92rem;
+      font-weight: 800;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 12px;
+      border-radius: 999px;
+      background: #ecf6f2;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--sea), var(--leaf), var(--sun));
+      transition: width .24s ease;
+    }
+
+    .skill-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: .3rem .6rem;
+      border-radius: 999px;
+      background: var(--mint);
+      color: #0b6b68;
+      font-weight: 900;
+      font-size: .85rem;
+      margin-bottom: .85rem;
+    }
+
+    .question-text {
+      font-size: clamp(1.3rem, 3vw, 2rem);
+      line-height: 1.45;
+      margin-bottom: 1rem;
+    }
+
+    .choices {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .75rem;
+    }
+
+    .choice-btn {
+      min-height: 76px;
+      padding: .85rem 1rem;
+      border: 2px solid var(--line);
+      background: #fffdf6;
+      color: var(--ink);
+      text-align: left;
+      line-height: 1.45;
+    }
+
+    .choice-btn.correct {
+      border-color: var(--leaf);
+      background: #eaffef;
+    }
+
+    .choice-btn.wrong {
+      border-color: var(--rose);
+      background: #fff0f3;
+    }
+
+    .feedback {
+      display: none;
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: var(--radius);
+      background: #f4fbff;
+      border: 1px solid rgba(58, 134, 255, .2);
+      line-height: 1.65;
+    }
+
+    .feedback.show {
+      display: block;
+    }
+
+    .feedback strong {
+      display: block;
+      margin-bottom: .25rem;
+    }
+
+    .game-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: .65rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: .6rem;
+      margin: .85rem 0 1rem;
+    }
+
+    .stat {
+      padding: .75rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fffdf6;
+    }
+
+    .stat b {
+      display: block;
+      font-size: 1.45rem;
+      line-height: 1;
+      margin-bottom: .25rem;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: .84rem;
+      font-weight: 800;
+    }
+
+    .map-card {
+      margin-top: .8rem;
+      padding: .8rem;
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, var(--sky), #fff);
+      border: 1px solid rgba(58, 134, 255, .16);
+    }
+
+    .small-art {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .result-panel {
+      max-width: 860px;
+      margin: 1.2rem auto;
+      padding: clamp(1rem, 3vw, 1.6rem);
+      text-align: center;
+    }
+
+    .score-ring {
+      width: 170px;
+      aspect-ratio: 1;
+      margin: 1rem auto;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at center, #fff 58%, transparent 59%),
+        conic-gradient(var(--leaf) 0deg, var(--leaf) var(--score-deg), #eef5f4 var(--score-deg), #eef5f4 360deg);
+      box-shadow: inset 0 0 0 1px var(--line), var(--shadow);
+    }
+
+    .score-ring b {
+      font-size: 2.4rem;
+    }
+
+    .result-note {
+      max-width: 62ch;
+      margin: 0 auto 1rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .review-list {
+      display: grid;
+      gap: .65rem;
+      margin-top: 1rem;
+      text-align: left;
+    }
+
+    .review-item {
+      padding: .8rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fffdf6;
+    }
+
+    .review-item b {
+      color: var(--rose);
+    }
+
+    .info-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: .75rem;
+      padding: .85rem;
+      margin-top: 1rem;
+    }
+
+    .info-strip div {
+      padding: .75rem;
+      border-radius: var(--radius);
+      background: #fffdf6;
+      line-height: 1.5;
+    }
+
+    .info-strip strong {
+      display: block;
+      margin-bottom: .15rem;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .game-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .mission-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .side-panel {
+        position: static;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .status-pills {
+        justify-content: flex-start;
+      }
+
+      .start-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .choices,
+      .mission-grid,
+      .info-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .mission-card {
+        min-height: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand" aria-label="ชื่อเกม">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64" role="img">
+            <path fill="currentColor" d="M13 15h27a8 8 0 0 1 8 8v28H20a7 7 0 0 1-7-7V15Z" opacity=".9"/>
+            <path fill="#143c3f" d="M20 23h22v4H20zm0 9h18v4H20zm0 9h12v4H20z"/>
+            <path fill="#fff" d="m44 8 3.9 8.1 8.9 1.2-6.4 6.2 1.5 8.8L44 28.1l-7.9 4.2 1.5-8.8-6.4-6.2 8.9-1.2L44 8Z"/>
+          </svg>
+        </div>
+        <div class="brand-title">ภารกิจเกาะความรู้ ป.1-ป.2</div>
+      </div>
+      <div class="status-pills" aria-live="polite">
+        <span class="pill"><i class="dot"></i> เลเวล <span id="levelText">1</span></span>
+        <span class="pill"><i class="dot sun"></i> ดาว <span id="starText">0</span></span>
+        <span class="pill"><i class="dot rose"></i> เวลา <span id="timerText">30:00</span></span>
+      </div>
+    </header>
+
+    <main>
+      <section id="homeScreen" class="screen active">
+        <div class="hero">
+          <div>
+            <div class="eyebrow">เกมทบทวนบทเรียนและเตรียมสอบสำหรับเด็กประถมต้น</div>
+            <h1>เรียนให้เหมือนออกผจญภัย ตอบให้เหมือนค้นพบสมบัติ</h1>
+            <p class="lead">
+              เกมนี้ออกแบบสำหรับนักเรียนชั้น ป.1-ป.2 ให้ฝึกอ่าน คิดเลข ภาษาอังกฤษ วิทยาศาสตร์ และทักษะชีวิต
+              ผ่านคำถามสั้น กระชับ มีเฉลยพร้อมเหตุผล และระบบดาวเพื่อกระตุ้นให้เด็กอยากกลับมาทบทวนซ้ำ
+            </p>
+            <div class="start-panel" aria-label="เริ่มเกม">
+              <div class="field">
+                <label for="playerName">ชื่อผู้เล่น</label>
+                <input id="playerName" autocomplete="name" placeholder="เช่น น้องมายด์">
+              </div>
+              <div class="field">
+                <label for="gradeSelect">ระดับชั้น</label>
+                <select id="gradeSelect">
+                  <option value="p1">ประถม 1</option>
+                  <option value="p2">ประถม 2</option>
+                </select>
+              </div>
+              <button id="startBtn" class="primary-btn">เลือกภารกิจ</button>
+            </div>
+            <div class="info-strip" aria-label="จุดเด่นของเกม">
+              <div><strong>รอบละ 10 ข้อ</strong>เหมาะกับช่วงสมาธิเด็กเล็ก ใช้เวลาสั้นและไม่กดดัน</div>
+              <div><strong>เฉลยทันที</strong>ผู้ปกครองใช้สอนซ้ำได้ ไม่ใช่แค่บอกว่าถูกหรือผิด</div>
+              <div><strong>จำข้อที่เล่นแล้ว</strong>ช่วยลดการเจอข้อเดิมซ้ำในเครื่องเดียวกัน</div>
+            </div>
+          </div>
+
+          <svg class="island-art" viewBox="0 0 760 560" role="img" aria-label="ภาพประกอบเกาะความรู้ หนังสือ ดินสอ และเส้นทางภารกิจ">
+            <defs>
+              <linearGradient id="seaGradient" x1="0" x2="1" y1="0" y2="1">
+                <stop stop-color="#dff3ff"/>
+                <stop offset="1" stop-color="#d8fff4"/>
+              </linearGradient>
+              <linearGradient id="bookGradient" x1="0" x2="1">
+                <stop stop-color="#18a6a6"/>
+                <stop offset="1" stop-color="#49b96f"/>
+              </linearGradient>
+              <linearGradient id="roseGradient" x1="0" x2="1">
+                <stop stop-color="#ff6d82"/>
+                <stop offset="1" stop-color="#ffd45d"/>
+              </linearGradient>
+            </defs>
+            <rect x="26" y="34" width="708" height="492" rx="34" fill="url(#seaGradient)"/>
+            <path d="M98 400c95-73 144 9 230-45 85-54 134-107 235-61 72 33 117 82 118 133 2 81-114 95-280 95H179c-97 0-143-64-81-122Z" fill="#fffdf6"/>
+            <path d="M226 296c45-46 110-77 184-77 79 0 148 34 193 86-86-26-139 35-217 60-69 23-116-18-160-69Z" fill="#49b96f"/>
+            <path d="M218 302c40 42 97 66 161 66 72 0 136-30 178-78" fill="none" stroke="#143c3f" stroke-width="8" stroke-linecap="round" opacity=".15"/>
+            <path d="M258 219h136c30 0 54 24 54 54v126H292c-39 0-70-31-70-70v-74c0-20 16-36 36-36Z" fill="url(#bookGradient)"/>
+            <path d="M396 219h106c30 0 54 24 54 54v126H448V273c0-30-24-54-52-54Z" fill="#3a86ff"/>
+            <path d="M280 269h116M280 304h98M280 339h72" stroke="#fff" stroke-width="12" stroke-linecap="round"/>
+            <path d="M476 269h44M476 304h44M476 339h44" stroke="#fff" stroke-width="12" stroke-linecap="round" opacity=".85"/>
+            <path d="M594 119 642 214 548 166l-68 68 46-92-82-52 98 14 52-85Z" fill="url(#roseGradient)"/>
+            <path d="m166 145 48 21-22 111-80 40 7-91 47-81Z" fill="#ffd45d"/>
+            <path d="m166 145 48 21-18 29-48-21 18-29Z" fill="#ff6d82"/>
+            <path d="m112 317 28-14-22-13-6 27Z" fill="#143c3f"/>
+            <path d="M154 437c90 30 306 44 440-4" fill="none" stroke="#18a6a6" stroke-width="11" stroke-linecap="round" stroke-dasharray="8 24" opacity=".5"/>
+            <g fill="#fff">
+              <circle cx="137" cy="112" r="18"/>
+              <circle cx="164" cy="112" r="24"/>
+              <circle cx="194" cy="112" r="15"/>
+              <circle cx="622" cy="88" r="14"/>
+              <circle cx="644" cy="88" r="21"/>
+              <circle cx="672" cy="88" r="13"/>
+            </g>
+          </svg>
+        </div>
+      </section>
+
+      <section id="missionScreen" class="screen">
+        <div class="toolbar">
+          <div>
+            <div class="eyebrow">เลือกภารกิจของ <span id="missionPlayer">นักเรียน</span></div>
+            <h2>วันนี้อยากฝึกวิชาไหน</h2>
+            <p class="lead">แต่ละภารกิจมีข้อสอบ 10 ข้อ พร้อมเฉลยและเหตุผล เมื่อเล่นครบแล้วระบบจะบันทึกดาวและความก้าวหน้าไว้ในเครื่องนี้</p>
+          </div>
+          <button id="backHomeBtn" class="ghost-btn">กลับหน้าแรก</button>
+        </div>
+        <div id="missionGrid" class="mission-grid"></div>
+      </section>
+
+      <section id="gameScreen" class="screen">
+        <div class="toolbar">
+          <div>
+            <div class="eyebrow"><span id="activeGrade">ป.1</span> <span id="activeSubject">ภาษาไทย</span></div>
+            <h2 id="missionTitle">ภารกิจ</h2>
+          </div>
+          <button id="exitMissionBtn" class="ghost-btn">เปลี่ยนวิชา</button>
+        </div>
+
+        <div class="game-wrap">
+          <article class="question-panel" aria-live="polite">
+            <div class="progress-row">
+              <div class="progress-label">
+                <span id="questionCount">ข้อ 1/10</span>
+                <span>คะแนน <span id="scoreText">0</span></span>
+              </div>
+              <div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
+            </div>
+            <span id="skillTag" class="skill-tag">ทักษะ</span>
+            <h3 id="questionText" class="question-text">คำถาม</h3>
+            <div id="choices" class="choices"></div>
+            <div id="feedback" class="feedback"></div>
+            <div class="game-actions">
+              <button id="hintBtn" class="ghost-btn">ขอคำใบ้</button>
+              <button id="nextBtn" class="secondary-btn" disabled>ข้อต่อไป</button>
+            </div>
+          </article>
+
+          <aside class="side-panel">
+            <h3>กระเป๋าภารกิจ</h3>
+            <div class="stat-grid">
+              <div class="stat"><b id="sideScore">0</b><span>คะแนนรอบนี้</span></div>
+              <div class="stat"><b id="sideStreak">0</b><span>ตอบถูกต่อเนื่อง</span></div>
+              <div class="stat"><b id="sideDone">0</b><span>ข้อที่ทำแล้ว</span></div>
+              <div class="stat"><b id="sideAccuracy">0%</b><span>ความแม่นยำ</span></div>
+            </div>
+            <p class="lead" style="font-size:.96rem">คำแนะนำสำหรับผู้ปกครอง: หากเด็กตอบผิด ให้ถามว่า “เราคิดจากตรงไหน” ก่อนอ่านเฉลย จะช่วยฝึกการอธิบายเหตุผลมากกว่าการท่องจำ</p>
+            <div class="map-card">
+              <svg class="small-art" viewBox="0 0 360 220" role="img" aria-label="ภาพแผนที่ภารกิจ">
+                <rect width="360" height="220" rx="20" fill="#dff3ff"/>
+                <path d="M38 150c48-42 86 4 130-34 47-40 93-73 148-23 36 33 21 83-45 91H88c-55 0-82-18-50-34Z" fill="#fffdf6"/>
+                <path d="M82 146c38-36 91-54 151-52 44 2 76 16 100 39-48 6-72 30-112 37-48 9-87-7-139-24Z" fill="#49b96f"/>
+                <circle cx="88" cy="148" r="12" fill="#ff6d82"/>
+                <circle cx="175" cy="103" r="12" fill="#ffd45d"/>
+                <circle cx="266" cy="151" r="12" fill="#18a6a6"/>
+                <path d="M99 145c31-24 48-33 76-42 34 4 51 17 91 48" fill="none" stroke="#143c3f" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 14" opacity=".35"/>
+                <path d="M70 58h78v48H70z" fill="#3a86ff"/>
+                <path d="M148 58h66v48h-66z" fill="#18a6a6"/>
+                <path d="M85 75h48M85 91h32M163 75h35M163 91h25" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="resultScreen" class="screen">
+        <article class="result-panel">
+          <div class="eyebrow">สรุปภารกิจ</div>
+          <h2 id="resultTitle">ทำได้ดีมาก</h2>
+          <div id="scoreRing" class="score-ring" style="--score-deg:0deg"><b id="finalScore">0/10</b></div>
+          <p id="resultNote" class="result-note"></p>
+          <div class="game-actions" style="justify-content:center">
+            <button id="retryBtn" class="secondary-btn">เล่นวิชาเดิมอีกครั้ง</button>
+            <button id="chooseNewBtn" class="primary-btn">เลือกวิชาใหม่</button>
+            <button id="resetSeenBtn" class="ghost-btn">ล้างประวัติข้อที่เคยเจอ</button>
+          </div>
+          <div id="reviewList" class="review-list"></div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const subjects = {
+      thai: {
+        label: "ภาษาไทย",
+        short: "อ่าน-เขียน",
+        color: "#18a6a6",
+        icon: "book",
+        intro: "อ่านจับใจความ สะกดคำ และเลือกคำให้เหมาะสม"
+      },
+      math: {
+        label: "คณิตศาสตร์",
+        short: "คิดเลข",
+        color: "#3a86ff",
+        icon: "math",
+        intro: "บวก ลบ เปรียบเทียบจำนวน และโจทย์ปัญหาใกล้ตัว"
+      },
+      english: {
+        label: "ภาษาอังกฤษ",
+        short: "คำศัพท์",
+        color: "#ff6d82",
+        icon: "abc",
+        intro: "คำศัพท์พื้นฐาน ประโยคสั้น และการเลือกคำตอบ"
+      },
+      science: {
+        label: "วิทยาศาสตร์",
+        short: "สังเกตโลก",
+        color: "#49b96f",
+        icon: "science",
+        intro: "สิ่งมีชีวิต วัสดุ แสง เสียง และการดูแลร่างกาย"
+      },
+      life: {
+        label: "สังคมและทักษะชีวิต",
+        short: "คิดเป็น",
+        color: "#ffd45d",
+        icon: "life",
+        intro: "มารยาท ความปลอดภัย หน้าที่ และการอยู่ร่วมกัน"
+      }
+    };
+
+    const questionBank = {
+      p1: {
+        thai: [
+          q("p1-th-1", "คำว่า “แม่” มีสระอะไร", ["สระแอ", "สระอา", "สระเอ", "สระอี"], 0, "คำว่า แม่ ออกเสียง /แอ/ จึงใช้สระแอ", "สระและการสะกดคำ", "ลองอ่านออกเสียงช้า ๆ แล้วฟังเสียงสระกลางคำ"),
+          q("p1-th-2", "ข้อใดเป็นคำที่มีความหมายว่า ผู้ให้กำเนิดเรา", ["บ้าน", "แม่", "น้ำ", "ดาว"], 1, "แม่ หมายถึงผู้หญิงที่ให้กำเนิดหรือเลี้ยงดูเรา", "ความหมายคำพื้นฐาน", "คิดถึงคนในครอบครัว"),
+          q("p1-th-3", "ประโยคใดเรียงคำถูกต้อง", ["กิน ฉัน ข้าว", "ข้าว กิน ฉัน", "ฉันกินข้าว", "กินข้าวฉัน"], 2, "ประโยคพื้นฐานมักเรียงเป็น ประธาน + กริยา + กรรม คือ ฉัน + กิน + ข้าว", "การเรียงประโยค", "หาให้เจอว่าใครทำอะไร"),
+          q("p1-th-4", "คำใดขึ้นต้นด้วยพยัญชนะเดียวกับคำว่า “ปลา”", ["ปู", "กา", "ม้า", "ยา"], 0, "ปลา และ ปู ขึ้นต้นด้วย ป ปลา", "พยัญชนะต้น", "ดูตัวอักษรตัวแรกของคำ"),
+          q("p1-th-5", "ข้อใดเป็นคำสุภาพเมื่อขอของจากเพื่อน", ["เอามา", "ขอหน่อยนะ", "รีบให้", "ไม่ให้ก็ได้"], 1, "การพูดว่า ขอหน่อยนะ สุภาพและเหมาะกับการขอความช่วยเหลือ", "ภาษาเพื่อการสื่อสาร", "เลือกคำที่ฟังแล้วเพื่อนรู้สึกดี"),
+          q("p1-th-6", "คำว่า “โรงเรียน” มีความหมายใกล้เคียงกับข้อใด", ["ที่นอน", "ที่เรียนหนังสือ", "ที่ซื้อของ", "ที่อาบน้ำ"], 1, "โรงเรียนคือสถานที่สำหรับเรียนหนังสือและทำกิจกรรมกับครูและเพื่อน", "คำศัพท์ใกล้ตัว", "คิดถึงสถานที่ที่เด็กไปเรียน"),
+          q("p1-th-7", "ข้อใดเป็นประโยคคำถาม", ["ฉันชอบอ่านหนังสือ", "เธอชื่ออะไร", "น้องวิ่งเร็ว", "คุณครูใจดี"], 1, "เธอชื่ออะไร เป็นประโยคที่ถามเพื่อให้ผู้อื่นตอบ", "ชนิดประโยค", "มองหาคำว่า อะไร ที่ใช้ถาม"),
+          q("p1-th-8", "คำใดคล้องจองกับคำว่า “นา”", ["ตา", "กิน", "เรือ", "โต๊ะ"], 0, "นา และ ตา ลงท้ายเสียง อา เหมือนกัน จึงคล้องจอง", "คำคล้องจอง", "ฟังเสียงท้ายคำ"),
+          q("p1-th-9", "คำใดควรเติมในช่องว่าง “ฉัน____น้ำ”", ["ดื่ม", "นอน", "เดิน", "เขียน"], 0, "น้ำเป็นสิ่งที่เราดื่ม จึงใช้คำว่า ดื่มน้ำ", "เลือกคำกริยา", "คิดว่ากับน้ำเราทำอะไรได้เหมาะที่สุด"),
+          q("p1-th-10", "เมื่ออ่านแล้วไม่เข้าใจ ควรทำอย่างไร", ["เดาสุ่ม", "ถามครูหรืออ่านซ้ำ", "เลิกอ่านทันที", "ตอบให้เร็วที่สุด"], 1, "การอ่านซ้ำหรือถามครูช่วยให้เข้าใจเนื้อหาถูกต้องขึ้น", "นิสัยรักการอ่าน", "เลือกวิธีที่ช่วยให้เข้าใจมากขึ้น")
+        ],
+        math: [
+          q("p1-ma-1", "5 + 3 เท่ากับเท่าไร", ["6", "7", "8", "9"], 2, "นับต่อจาก 5 อีก 3 ครั้ง คือ 6, 7, 8", "การบวกไม่เกิน 10", "ใช้นิ้วช่วยนับต่อจาก 5"),
+          q("p1-ma-2", "10 - 4 เท่ากับเท่าไร", ["4", "5", "6", "7"], 2, "เอาออกจาก 10 จำนวน 4 เหลือ 6", "การลบไม่เกิน 10", "นับถอยหลังจาก 10 สี่ครั้ง"),
+          q("p1-ma-3", "จำนวนใดมากที่สุด", ["12", "9", "15", "11"], 2, "15 มากกว่า 12, 11 และ 9", "เปรียบเทียบจำนวน", "ดูหลักสิบก่อน แล้วดูหลักหน่วย"),
+          q("p1-ma-4", "เลขใดอยู่ระหว่าง 6 และ 8", ["5", "7", "9", "10"], 1, "ลำดับคือ 6, 7, 8 ดังนั้น 7 อยู่ระหว่าง 6 และ 8", "ลำดับจำนวน", "นับเลขเรียงกัน"),
+          q("p1-ma-5", "มีดินสอ 4 แท่ง ซื้อเพิ่ม 2 แท่ง รวมเป็นกี่แท่ง", ["5", "6", "7", "8"], 1, "4 + 2 = 6 จึงมีดินสอทั้งหมด 6 แท่ง", "โจทย์ปัญหาการบวก", "คำว่า ซื้อเพิ่ม มักใช้การบวก"),
+          q("p1-ma-6", "รูปใดมี 3 ด้าน", ["วงกลม", "สามเหลี่ยม", "สี่เหลี่ยม", "ดาว"], 1, "สามเหลี่ยมมีด้าน 3 ด้าน", "รูปเรขาคณิต", "จำคำว่า สาม ในสามเหลี่ยม"),
+          q("p1-ma-7", "20 อ่านว่าอย่างไร", ["สิบสอง", "ยี่สิบ", "สามสิบ", "สอง"], 1, "เลข 20 อ่านว่า ยี่สิบ", "การอ่านจำนวน", "เลข 2 ในหลักสิบอ่านว่ายี่สิบ"),
+          q("p1-ma-8", "ข้อใดเรียงจากน้อยไปมาก", ["3, 5, 8", "8, 5, 3", "5, 3, 8", "3, 8, 5"], 0, "3 น้อยกว่า 5 และ 5 น้อยกว่า 8 จึงเรียง 3, 5, 8", "เรียงลำดับจำนวน", "เริ่มจากจำนวนที่น้อยที่สุด"),
+          q("p1-ma-9", "ถ้ามีขนม 6 ชิ้น แบ่งให้น้อง 1 ชิ้น เหลือกี่ชิ้น", ["4", "5", "6", "7"], 1, "6 - 1 = 5 เหลือขนม 5 ชิ้น", "โจทย์ปัญหาการลบ", "คำว่า แบ่งให้ แล้วเหลือ มักใช้การลบ"),
+          q("p1-ma-10", "เวลาเช้าเหมาะกับกิจกรรมใดมากที่สุด", ["กินอาหารเช้า", "เข้านอนทั้งวัน", "ดูดาว", "แปรงฟันก่อนนอน"], 0, "ตอนเช้ามักเริ่มวันด้วยการล้างหน้า แปรงฟัน และกินอาหารเช้า", "เวลาในชีวิตประจำวัน", "เลือกกิจกรรมที่ทำหลังตื่นนอน")
+        ],
+        english: [
+          q("p1-en-1", "คำว่า cat หมายถึงอะไร", ["แมว", "หมา", "ปลา", "นก"], 0, "cat แปลว่า แมว", "คำศัพท์สัตว์", "คำนี้มักออกเสียงว่า แคท"),
+          q("p1-en-2", "คำว่า red คือสีอะไร", ["สีฟ้า", "สีแดง", "สีเขียว", "สีดำ"], 1, "red แปลว่า สีแดง", "คำศัพท์สี", "นึกถึงไฟจราจรสีหยุด"),
+          q("p1-en-3", "คำทักทายตอนเช้าคือข้อใด", ["Good night", "Good morning", "Goodbye", "Thank you"], 1, "Good morning ใช้ทักทายตอนเช้า", "คำทักทาย", "morning แปลว่า ตอนเช้า"),
+          q("p1-en-4", "I am happy. คำว่า happy หมายถึงอะไร", ["หิว", "มีความสุข", "ง่วง", "หนาว"], 1, "happy แปลว่า มีความสุข", "อารมณ์พื้นฐาน", "คิดถึงหน้าที่ยิ้ม"),
+          q("p1-en-5", "ข้อใดคือเลข 3 ภาษาอังกฤษ", ["one", "two", "three", "four"], 2, "three แปลว่า สาม", "ตัวเลขภาษาอังกฤษ", "นับ one, two, three"),
+          q("p1-en-6", "คำว่า book หมายถึงอะไร", ["หนังสือ", "เก้าอี้", "รองเท้า", "ประตู"], 0, "book แปลว่า หนังสือ", "ของใช้ในห้องเรียน", "ใช้สำหรับอ่าน"),
+          q("p1-en-7", "ประโยคใดใช้ขอบคุณ", ["Thank you", "Go away", "Sit down", "No"], 0, "Thank you ใช้พูดขอบคุณ", "มารยาทภาษาอังกฤษ", "เวลาเพื่อนช่วย เราพูดคำนี้"),
+          q("p1-en-8", "คำว่า big ตรงข้ามกับคำใด", ["small", "hot", "fast", "red"], 0, "big แปลว่า ใหญ่ คำตรงข้ามคือ small แปลว่า เล็ก", "คำตรงข้าม", "คิดถึงของใหญ่กับของเล็ก"),
+          q("p1-en-9", "A, B, C ตัวต่อไปคืออะไร", ["D", "E", "G", "Z"], 0, "ลำดับตัวอักษรภาษาอังกฤษเริ่ม A, B, C, D", "ลำดับตัวอักษร", "ร้องเพลง ABC ช่วยได้"),
+          q("p1-en-10", "This is my pencil. pencil คืออะไร", ["ยางลบ", "ดินสอ", "ไม้บรรทัด", "โต๊ะ"], 1, "pencil แปลว่า ดินสอ", "ของใช้ในห้องเรียน", "ใช้เขียนและลบได้เมื่อใช้ดินสอ")
+        ],
+        science: [
+          q("p1-sc-1", "สิ่งใดต้องการน้ำและแสงแดดเพื่อเจริญเติบโต", ["ก้อนหิน", "ต้นไม้", "ดินสอ", "รองเท้า"], 1, "ต้นไม้เป็นสิ่งมีชีวิต ต้องการน้ำ แสงแดด และอากาศ", "สิ่งมีชีวิต", "คิดถึงสิ่งที่ปลูกในดิน"),
+          q("p1-sc-2", "อวัยวะใดใช้มองเห็น", ["ตา", "หู", "จมูก", "มือ"], 0, "ตาเป็นอวัยวะที่ใช้มองเห็น", "อวัยวะและหน้าที่", "เราใช้สิ่งนี้อ่านหนังสือ"),
+          q("p1-sc-3", "ข้อใดเป็นของแข็ง", ["น้ำ", "นม", "ก้อนหิน", "อากาศ"], 2, "ก้อนหินมีรูปร่างค่อนข้างคงที่ จึงเป็นของแข็ง", "สถานะของสสาร", "จับแล้วเป็นชิ้น ไม่ไหล"),
+          q("p1-sc-4", "เสียงดังมากอาจเป็นอันตรายต่ออวัยวะใด", ["หู", "เท้า", "ผม", "เล็บ"], 0, "หูใช้ฟังเสียง เสียงดังเกินไปอาจทำให้หูเจ็บหรือการได้ยินเสีย", "การดูแลประสาทสัมผัส", "เสียงเกี่ยวกับอวัยวะที่ใช้ฟัง"),
+          q("p1-sc-5", "ข้อใดช่วยให้ร่างกายแข็งแรง", ["นอนดึกทุกวัน", "กินผักผลไม้", "ไม่อาบน้ำ", "กินขนมแทนข้าว"], 1, "ผักผลไม้มีประโยชน์และช่วยให้ร่างกายได้รับสารอาหาร", "สุขภาพพื้นฐาน", "เลือกสิ่งที่ดีต่อร่างกาย"),
+          q("p1-sc-6", "เมื่อฝนตก เราควรใช้อะไรป้องกันเปียก", ["ร่ม", "แก้วน้ำ", "ช้อน", "สมุด"], 0, "ร่มช่วยกันฝนไม่ให้ตัวเปียก", "สภาพอากาศ", "ของนี้ใช้กางเหนือศีรษะ"),
+          q("p1-sc-7", "สิ่งใดเป็นแหล่งกำเนิดแสง", ["ดวงอาทิตย์", "สมุด", "เก้าอี้", "ก้อนดิน"], 0, "ดวงอาทิตย์ให้แสงสว่างตามธรรมชาติ", "แสง", "ตอนกลางวันเรามองเห็นเพราะสิ่งนี้"),
+          q("p1-sc-8", "วัสดุใดมักใช้ทำแก้วน้ำใส", ["กระดาษ", "แก้ว", "ผ้า", "ดิน"], 1, "แก้วเป็นวัสดุที่แข็งและใส จึงใช้ทำแก้วน้ำบางชนิด", "วัสดุรอบตัว", "คำตอบมีชื่อเหมือนภาชนะ"),
+          q("p1-sc-9", "ก่อนกินข้าวควรทำอะไร", ["ล้างมือ", "วิ่งกลางถนน", "จับรองเท้า", "นอนทันที"], 0, "การล้างมือช่วยลดเชื้อโรคก่อนกินอาหาร", "สุขอนามัย", "เลือกวิธีลดเชื้อโรค"),
+          q("p1-sc-10", "สัตว์ชนิดใดออกลูกเป็นไข่", ["ไก่", "คน", "วัว", "แมว"], 0, "ไก่ออกลูกเป็นไข่", "การสืบพันธุ์ของสัตว์", "นึกถึงไข่ที่เรากิน")
+        ],
+        life: [
+          q("p1-li-1", "เมื่อจะข้ามถนน ควรทำอย่างไรก่อน", ["วิ่งทันที", "มองซ้ายขวาและใช้ทางม้าลาย", "หลับตาเดิน", "เดินตามใจ"], 1, "การมองซ้ายขวาและใช้ทางม้าลายช่วยลดอุบัติเหตุ", "ความปลอดภัยบนถนน", "เลือกวิธีที่ปลอดภัยที่สุด"),
+          q("p1-li-2", "ถ้าเพื่อนล้ม ควรทำอย่างไร", ["หัวเราะ", "ช่วยหรือบอกครู", "เดินหนี", "แกล้งซ้ำ"], 1, "การช่วยเพื่อนหรือบอกครูเป็นพฤติกรรมที่มีน้ำใจและปลอดภัย", "การอยู่ร่วมกัน", "คิดว่าถ้าเราเป็นคนล้ม อยากให้เพื่อนทำอย่างไร"),
+          q("p1-li-3", "ข้อใดเป็นหน้าที่ของนักเรียน", ["ตั้งใจเรียน", "ทำลายของ", "แย่งของเพื่อน", "มาสายทุกวัน"], 0, "นักเรียนควรตั้งใจเรียน เคารพครู และดูแลของใช้", "หน้าที่", "เลือกสิ่งที่ทำให้เรียนดีขึ้น"),
+          q("p1-li-4", "เมื่อได้รับของจากผู้ใหญ่ ควรพูดว่าอะไร", ["ขอบคุณครับ/ค่ะ", "ไม่เอา", "เร็ว ๆ", "เอาอีก"], 0, "การพูดขอบคุณเป็นมารยาทที่ดี", "มารยาท", "คำนี้ใช้เมื่อมีคนให้ของหรือช่วยเรา"),
+          q("p1-li-5", "หากเจอคนแปลกหน้าชวนไปด้วย ควรทำอย่างไร", ["ไปทันที", "บอกผู้ปกครองหรือครู", "รับขนมแล้วตามไป", "ไม่บอกใคร"], 1, "เด็กควรอยู่กับผู้ใหญ่ที่ไว้ใจได้ และบอกครูหรือผู้ปกครองทันที", "ความปลอดภัยส่วนบุคคล", "เลือกวิธีที่ทำให้ผู้ใหญ่ช่วยดูแลได้"),
+          q("p1-li-6", "การเก็บของเล่นหลังเล่นเสร็จช่วยเรื่องใด", ["ห้องเป็นระเบียบ", "ของหายง่าย", "เดินสะดุดง่าย", "ทำให้เพื่อนโกรธ"], 0, "เก็บของเล่นช่วยให้ห้องสะอาด ปลอดภัย และหาของง่าย", "ความรับผิดชอบ", "คิดถึงห้องที่เดินสะดวก"),
+          q("p1-li-7", "ข้อใดช่วยประหยัดน้ำ", ["ปิดก๊อกเมื่อไม่ใช้", "เปิดน้ำทิ้งไว้", "เล่นน้ำทั้งวัน", "ล้างแก้วทีละหยดทั้งคืน"], 0, "ปิดก๊อกน้ำเมื่อไม่ใช้ช่วยประหยัดน้ำ", "สิ่งแวดล้อม", "เลือกวิธีไม่ให้น้ำไหลทิ้ง"),
+          q("p1-li-8", "ถ้าอยากพูดในห้องเรียน ควรทำอย่างไร", ["ตะโกนแทรก", "ยกมือก่อนพูด", "พูดพร้อมเพื่อน", "เดินออกจากห้อง"], 1, "ยกมือก่อนพูดช่วยให้ห้องเรียนเป็นระเบียบและฟังกันได้", "กติกาในห้องเรียน", "ครูจะเห็นว่าเราต้องการตอบ"),
+          q("p1-li-9", "การแปรงฟันควรทำอย่างน้อยวันละกี่ครั้ง", ["1 ครั้ง", "2 ครั้ง", "5 ครั้ง", "ไม่ต้องแปรง"], 1, "โดยทั่วไปควรแปรงฟันเช้าและก่อนนอน อย่างน้อยวันละ 2 ครั้ง", "สุขนิสัย", "เช้าและก่อนนอน"),
+          q("p1-li-10", "เมื่อทำผิด ควรทำอย่างไร", ["ขอโทษและแก้ไข", "โทษคนอื่น", "โกหก", "ทำซ้ำ"], 0, "การขอโทษและแก้ไขแสดงความรับผิดชอบ", "ความซื่อสัตย์", "เลือกวิธีที่ทำให้เรื่องดีขึ้น")
+        ]
+      },
+      p2: {
+        thai: [
+          q("p2-th-1", "ข้อใดเป็นคำที่มีตัวสะกดแม่กง", ["บ้าน", "ร้อง", "ดาว", "กิน"], 1, "คำว่า ร้อง สะกดด้วย ง จึงอยู่ในแม่กง", "มาตราตัวสะกด", "มองหาคำที่ลงท้ายเสียง ง"),
+          q("p2-th-2", "ประโยคใดมีคำวิเศษณ์บอกลักษณะ", ["น้องวิ่งเร็ว", "แม่ทำกับข้าว", "ฉันมีสมุด", "ครูเขียนกระดาน"], 0, "คำว่า เร็ว บอกลักษณะการวิ่ง จึงเป็นคำวิเศษณ์", "ชนิดของคำ", "หาคำที่บอกว่า ทำอย่างไร"),
+          q("p2-th-3", "คำใดเป็นคำตรงข้ามกับ “ขยัน”", ["ตั้งใจ", "เกียจคร้าน", "อดทน", "สุภาพ"], 1, "ขยันตรงข้ามกับเกียจคร้าน", "คำตรงข้าม", "เลือกคำที่ความหมายสวนทางกัน"),
+          q("p2-th-4", "ข้อใดเป็นใจความสำคัญของข้อความ “ฝนตกหนัก เด็ก ๆ จึงกางร่มเดินกลับบ้าน”", ["เด็กเล่นน้ำ", "ฝนตกหนัก", "ร่มสีสวย", "บ้านอยู่ไกล"], 1, "ข้อความกล่าวถึงฝนตกหนักเป็นเหตุการณ์หลัก", "จับใจความ", "ถามตัวเองว่าเรื่องนี้พูดถึงอะไรเป็นหลัก"),
+          q("p2-th-5", "คำใดเขียนถูกต้อง", ["ขอบคุน", "ขอบคุณ", "ขอบคูณ", "ขอบคูน"], 1, "คำที่ถูกต้องคือ ขอบคุณ", "การเขียนสะกดคำ", "คำนี้ใช้ ณ เณร ท้ายคำ"),
+          q("p2-th-6", "ข้อใดเป็นประโยคปฏิเสธ", ["ฉันไม่กินเผ็ด", "พ่ออ่านข่าว", "น้องไปโรงเรียน", "ฝนตก"], 0, "คำว่า ไม่ แสดงการปฏิเสธ", "ชนิดประโยค", "มองหาคำว่า ไม่"),
+          q("p2-th-7", "คำใดเป็นคำนาม", ["วิ่ง", "สวย", "โรงเรียน", "เร็ว"], 2, "โรงเรียนเป็นชื่อสถานที่ จึงเป็นคำนาม", "ชนิดของคำ", "คำนามคือชื่อคน สัตว์ สิ่งของ หรือสถานที่"),
+          q("p2-th-8", "ข้อใดใช้คำเชื่อมได้เหมาะสม “ฉันอ่านหนังสือ____ทำการบ้าน”", ["และ", "แต่", "เพราะ", "หรือไม่"], 0, "อ่านหนังสือและทำการบ้านเป็นการเชื่อมกิจกรรมสองอย่าง", "คำเชื่อม", "เลือกคำที่รวมสองกิจกรรมเข้าด้วยกัน"),
+          q("p2-th-9", "คำว่า “สะอาด” ควรใช้กับข้อใด", ["ห้องเรียนไม่มีขยะ", "รองเท้าเปียกโคลน", "โต๊ะมีฝุ่นมาก", "พื้นเลอะสี"], 0, "ไม่มีขยะและเป็นระเบียบแสดงว่าสะอาด", "ความหมายคำ", "เลือกภาพที่ดูเรียบร้อย"),
+          q("p2-th-10", "เมื่อต้องเขียนเรื่องสั้น ควรมีอะไรให้ครบ", ["ต้นเรื่อง กลางเรื่อง ท้ายเรื่อง", "เฉพาะชื่อเรื่อง", "เฉพาะรูปภาพ", "เฉพาะคำตอบ"], 0, "เรื่องที่ดีควรมีจุดเริ่มต้น เหตุการณ์ และตอนจบ", "การเขียนเรื่อง", "คิดเหมือนเล่าเรื่องให้เพื่อนฟัง")
+        ],
+        math: [
+          q("p2-ma-1", "27 + 15 เท่ากับเท่าไร", ["32", "42", "43", "52"], 1, "27 + 15 = 42 โดยบวกหลักหน่วย 7+5=12 ทด 1 แล้วบวกหลักสิบ", "การบวกสองหลัก", "บวกหลักหน่วยก่อน"),
+          q("p2-ma-2", "50 - 18 เท่ากับเท่าไร", ["22", "30", "32", "38"], 2, "50 - 18 = 32", "การลบสองหลัก", "ยืมจากหลักสิบเมื่อหลักหน่วยไม่พอ"),
+          q("p2-ma-3", "เลข 64 มีค่า 6 อยู่ในหลักใด", ["หลักหน่วย", "หลักสิบ", "หลักร้อย", "หลักพัน"], 1, "ในเลข 64 ตัวเลข 6 อยู่หลักสิบ มีค่า 60", "ค่าประจำหลัก", "หลักซ้ายของเลขสองหลักคือหลักสิบ"),
+          q("p2-ma-4", "ข้อใดเป็นจำนวนคู่", ["13", "25", "32", "47"], 2, "32 ลงท้ายด้วย 2 จึงเป็นจำนวนคู่", "จำนวนคู่จำนวนคี่", "จำนวนคู่ลงท้ายด้วย 0, 2, 4, 6, 8"),
+          q("p2-ma-5", "มีลูกอม 24 เม็ด แบ่งให้เพื่อน 6 เม็ด เหลือกี่เม็ด", ["16", "18", "20", "30"], 1, "24 - 6 = 18", "โจทย์ปัญหาการลบ", "คำว่า เหลือ มักใช้การลบ"),
+          q("p2-ma-6", "3 กลุ่ม กลุ่มละ 4 ชิ้น รวมกี่ชิ้น", ["7", "10", "12", "14"], 2, "4 + 4 + 4 = 12 หรือ 3 x 4 = 12", "การคูณเบื้องต้น", "บวก 4 ซ้ำ 3 ครั้ง"),
+          q("p2-ma-7", "รูปสี่เหลี่ยมมีด้านกี่ด้าน", ["2", "3", "4", "5"], 2, "รูปสี่เหลี่ยมมี 4 ด้าน", "รูปเรขาคณิต", "ชื่อรูปบอกจำนวนด้าน"),
+          q("p2-ma-8", "ข้อใดเรียงจากมากไปน้อย", ["45, 39, 28", "28, 39, 45", "39, 45, 28", "45, 28, 39"], 0, "45 มากกว่า 39 และ 39 มากกว่า 28", "เรียงลำดับจำนวน", "เริ่มจากจำนวนที่มากที่สุด"),
+          q("p2-ma-9", "ครึ่งหนึ่งของ 10 คือเท่าไร", ["2", "4", "5", "10"], 2, "แบ่ง 10 เป็น 2 ส่วนเท่า ๆ กัน จะได้ส่วนละ 5", "เศษส่วนเบื้องต้น", "คิดว่า 5 + 5 = 10"),
+          q("p2-ma-10", "ถ้าวันนี้เป็นวันจันทร์ อีก 2 วันเป็นวันอะไร", ["อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์"], 1, "นับต่อจากจันทร์ 1 วันคืออังคาร 2 วันคือพุธ", "วันและเวลา", "นับทีละวัน")
+        ],
+        english: [
+          q("p2-en-1", "She is my mother. mother หมายถึงใคร", ["พ่อ", "แม่", "พี่ชาย", "ครู"], 1, "mother แปลว่า แม่", "ครอบครัว", "คำนี้มักคู่กับ father"),
+          q("p2-en-2", "ข้อใดแปลว่า “ฉันชอบนม”", ["I like milk.", "I see milk.", "I am milk.", "I go milk."], 0, "I like milk. แปลว่า ฉันชอบนม", "ประโยคบอกความชอบ", "like แปลว่า ชอบ"),
+          q("p2-en-3", "คำตรงข้ามของ hot คืออะไร", ["cold", "big", "fast", "new"], 0, "hot แปลว่า ร้อน คำตรงข้ามคือ cold แปลว่า เย็นหรือหนาว", "คำตรงข้าม", "คิดถึงน้ำร้อนกับน้ำเย็น"),
+          q("p2-en-4", "คำว่า school หมายถึงอะไร", ["บ้าน", "โรงเรียน", "สวน", "ร้านค้า"], 1, "school แปลว่า โรงเรียน", "สถานที่", "เป็นที่ที่นักเรียนไปเรียน"),
+          q("p2-en-5", "How are you? ควรตอบอย่างไรได้เหมาะสม", ["I am fine.", "Good night.", "It is red.", "This is a pen."], 0, "How are you? ถามว่าสบายดีไหม จึงตอบ I am fine. ได้", "บทสนทนาสั้น", "ตอบเกี่ยวกับความรู้สึกหรือสบายดีไหม"),
+          q("p2-en-6", "คำว่า five คือเลขใด", ["3", "4", "5", "6"], 2, "five แปลว่า ห้า", "ตัวเลขภาษาอังกฤษ", "นับ one, two, three, four, five"),
+          q("p2-en-7", "This is an apple. apple คืออะไร", ["แอปเปิล", "กล้วย", "ส้ม", "ข้าว"], 0, "apple แปลว่า แอปเปิล", "ผลไม้", "คำนี้ขึ้นต้นด้วย a"),
+          q("p2-en-8", "He is tall. tall หมายถึงอะไร", ["เตี้ย", "สูง", "เร็ว", "ช้า"], 1, "tall แปลว่า สูง", "คำบอกลักษณะ", "ใช้พูดถึงความสูง"),
+          q("p2-en-9", "คำใดเป็นสี", ["chair", "green", "run", "fish"], 1, "green แปลว่า สีเขียว", "คำศัพท์สี", "คิดถึงสีของใบไม้"),
+          q("p2-en-10", "ประโยคใดเป็นการขออนุญาต", ["May I go out?", "I am seven.", "It is a bag.", "She runs."], 0, "May I go out? ใช้ถามขออนุญาตออกไปข้างนอก", "มารยาทภาษาอังกฤษ", "May I ใช้ขึ้นต้นประโยคขออนุญาต")
+        ],
+        science: [
+          q("p2-sc-1", "ส่วนใดของพืชทำหน้าที่ดูดน้ำจากดิน", ["ราก", "ใบ", "ดอก", "ผล"], 0, "รากช่วยยึดต้นพืชและดูดน้ำกับแร่ธาตุจากดิน", "ส่วนประกอบของพืช", "ส่วนนี้อยู่ใต้ดิน"),
+          q("p2-sc-2", "ข้อใดเป็นแหล่งพลังงานให้ร่างกาย", ["อาหาร", "ดิน", "กระดาษ", "แก้ว"], 0, "อาหารให้พลังงานและสารอาหารแก่ร่างกาย", "ร่างกายและสุขภาพ", "เรากินสิ่งนี้ทุกวัน"),
+          q("p2-sc-3", "วัสดุใดดูดซับน้ำได้ดี", ["ผ้า", "เหล็ก", "แก้ว", "พลาสติกแข็ง"], 0, "ผ้าดูดซับน้ำได้ดีกว่าวัสดุที่ผิวแข็งและไม่ซึมน้ำ", "สมบัติวัสดุ", "ใช้เช็ดน้ำได้"),
+          q("p2-sc-4", "เมื่อวางน้ำแข็งไว้กลางแดด จะเกิดอะไรขึ้น", ["น้ำแข็งละลาย", "น้ำแข็งใหญ่ขึ้น", "กลายเป็นหิน", "ไม่มีการเปลี่ยนแปลง"], 0, "ความร้อนจากแสงแดดทำให้น้ำแข็งละลายเป็นน้ำ", "ความร้อนและการเปลี่ยนแปลง", "ของเย็นเจอความร้อน"),
+          q("p2-sc-5", "ข้อใดเป็นการประหยัดพลังงาน", ["ปิดไฟเมื่อไม่ใช้", "เปิดทีวีทิ้งไว้", "เปิดแอร์ทั้งวันโดยไม่มีคน", "เสียบปลั๊กทิ้งไว้ทุกอย่าง"], 0, "ปิดไฟเมื่อไม่ใช้ช่วยประหยัดไฟฟ้า", "พลังงาน", "เลือกวิธีใช้เท่าที่จำเป็น"),
+          q("p2-sc-6", "เสียงเดินทางมาถึงเราโดยใช้อวัยวะใดรับรู้", ["หู", "ตา", "ลิ้น", "จมูก"], 0, "หูเป็นอวัยวะที่ใช้ฟังเสียง", "เสียง", "เราใช้สิ่งนี้ฟังครูพูด"),
+          q("p2-sc-7", "ข้อใดเป็นสิ่งไม่มีชีวิต", ["ต้นข้าว", "ปลา", "ก้อนหิน", "คน"], 2, "ก้อนหินไม่กินอาหาร ไม่หายใจ และไม่เจริญเติบโต จึงเป็นสิ่งไม่มีชีวิต", "สิ่งมีชีวิตและไม่มีชีวิต", "เลือกสิ่งที่ไม่เติบโต"),
+          q("p2-sc-8", "ถ้าต้องการเห็นวัตถุในที่มืด ควรใช้อะไร", ["ไฟฉาย", "ช้อน", "ผ้า", "ดินสอ"], 0, "ไฟฉายให้แสง ทำให้เห็นวัตถุในที่มืด", "แสง", "ของนี้เปิดแล้วสว่าง"),
+          q("p2-sc-9", "การออกกำลังกายช่วยเรื่องใด", ["ร่างกายแข็งแรง", "ฟันผุเร็วขึ้น", "ทำให้ไม่ต้องนอน", "ทำให้ไม่ต้องกินอาหาร"], 0, "ออกกำลังกายช่วยให้กล้ามเนื้อและหัวใจแข็งแรง", "สุขภาพ", "เลือกผลดีต่อร่างกาย"),
+          q("p2-sc-10", "ข้อใดเป็นการสังเกตอย่างปลอดภัย", ["ดมสารแปลก ๆ ใกล้จมูก", "ชิมของที่ไม่รู้จัก", "ดูด้วยตาและถามครู", "จับปลั๊กไฟเปียก"], 2, "การดูด้วยตาและถามครูปลอดภัยกว่าการดมหรือชิมของไม่รู้จัก", "ทักษะกระบวนการวิทยาศาสตร์", "เลือกวิธีที่ไม่เสี่ยงอันตราย")
+        ],
+        life: [
+          q("p2-li-1", "ถ้าเห็นเพื่อนถูกล้อเลียน ควรทำอย่างไร", ["ร่วมล้อด้วย", "บอกครูและให้กำลังใจเพื่อน", "ถ่ายคลิป", "เดินหนีเสมอ"], 1, "การบอกครูและให้กำลังใจช่วยหยุดพฤติกรรมไม่ดีและปกป้องเพื่อน", "ความเห็นอกเห็นใจ", "เลือกวิธีช่วยให้เพื่อนปลอดภัย"),
+          q("p2-li-2", "ก่อนโพสต์รูปเพื่อน ควรทำอย่างไร", ["โพสต์ทันที", "ขออนุญาตก่อน", "ใส่คำล้อเล่นแรง ๆ", "ส่งให้คนแปลกหน้า"], 1, "ควรขออนุญาตก่อนใช้หรือเผยแพร่รูปของผู้อื่น", "ความปลอดภัยดิจิทัล", "รูปของเพื่อนเป็นข้อมูลส่วนตัว"),
+          q("p2-li-3", "ข้อใดเป็นการใช้เงินอย่างเหมาะสม", ["ซื้อทุกอย่างที่อยากได้", "เก็บออมบางส่วน", "ยืมเพื่อนเสมอ", "ทิ้งเงินเล่น"], 1, "การแบ่งเงินไว้เก็บออมช่วยฝึกวางแผนและรับผิดชอบ", "การเงินพื้นฐาน", "เลือกวิธีที่ยังมีเงินเหลือ"),
+          q("p2-li-4", "เมื่อเกิดไฟไหม้ควรทำอย่างไร", ["ซ่อนในตู้", "รีบออกจากพื้นที่และบอกผู้ใหญ่", "กลับไปหยิบของเล่น", "เปิดไฟเพิ่ม"], 1, "ควรออกจากที่อันตรายและแจ้งผู้ใหญ่หรือเจ้าหน้าที่", "ความปลอดภัย", "ชีวิตสำคัญกว่าสิ่งของ"),
+          q("p2-li-5", "การแยกขยะช่วยเรื่องใด", ["จัดการขยะง่ายขึ้น", "ทำให้ขยะเพิ่ม", "ทำให้ห้องเลอะ", "ทำให้หาอาหารยาก"], 0, "การแยกขยะช่วยนำบางอย่างไปรีไซเคิลและจัดการได้ถูกวิธี", "สิ่งแวดล้อม", "คิดถึงถังขยะแต่ละประเภท"),
+          q("p2-li-6", "ถ้าเพื่อนคิดไม่เหมือนเรา ควรทำอย่างไร", ["ฟังเหตุผลของเพื่อน", "ตะโกนใส่", "เลิกคบทันที", "บังคับให้เห็นด้วย"], 0, "การฟังเหตุผลช่วยให้เข้าใจกันและอยู่ร่วมกันได้ดี", "การสื่อสาร", "เลือกวิธีที่ทำให้คุยกันต่อได้"),
+          q("p2-li-7", "ข้อใดเป็นการดูแลของส่วนรวม", ["ขีดเขียนโต๊ะเรียน", "ใช้แล้วเก็บเข้าที่", "ทำหายแล้วไม่บอก", "เตะเก้าอี้เล่น"], 1, "ของส่วนรวมควรใช้ด้วยความระมัดระวังและเก็บเข้าที่", "ความรับผิดชอบต่อส่วนรวม", "ของนี้ทุกคนต้องใช้ร่วมกัน"),
+          q("p2-li-8", "เมื่อมีการบ้านยาก ควรทำอย่างไร", ["ลองทำก่อนแล้วถามเมื่อไม่เข้าใจ", "ฉีกทิ้ง", "ลอกเพื่อน", "ไม่ส่ง"], 0, "การลองทำก่อนช่วยฝึกคิด และถามเมื่อไม่เข้าใจช่วยให้เรียนรู้จริง", "การเรียนรู้ด้วยตนเอง", "เลือกวิธีที่ทำให้เก่งขึ้น"),
+          q("p2-li-9", "ถ้าได้รับข้อความจากคนไม่รู้จักถามที่อยู่ ควรทำอย่างไร", ["ตอบทันที", "ไม่ตอบและบอกผู้ปกครอง", "ส่งรูปบ้าน", "ชวนมาหา"], 1, "ที่อยู่เป็นข้อมูลส่วนตัว ไม่ควรบอกคนไม่รู้จัก และควรแจ้งผู้ปกครอง", "ความปลอดภัยออนไลน์", "ข้อมูลส่วนตัวต้องเก็บให้ปลอดภัย"),
+          q("p2-li-10", "ข้อใดเป็นการจัดเวลาอ่านหนังสือที่ดี", ["อ่านครั้งละสั้น ๆ และพักเป็นช่วง", "อ่านทั้งคืนไม่พัก", "เปิดเกมไปด้วยตลอด", "อ่านเฉพาะวันสอบ"], 0, "เด็กเล็กเหมาะกับการอ่านเป็นช่วงสั้น ๆ แล้วพัก จะจำได้ดีกว่าและไม่เหนื่อยเกินไป", "การจัดการเวลา", "เลือกวิธีที่สมองไม่ล้า")
+        ]
+      }
+    };
+
+    const iconPaths = {
+      book: '<path d="M11 10h18a7 7 0 0 1 7 7v25H17a6 6 0 0 1-6-6V10Z" fill="currentColor" opacity=".92"/><path d="M36 17a7 7 0 0 1 7-7h10v32H36V17Z" fill="currentColor" opacity=".55"/><path d="M18 19h12M18 27h11M18 35h8" stroke="#fff" stroke-width="4" stroke-linecap="round"/>',
+      math: '<rect x="11" y="11" width="42" height="42" rx="8" fill="currentColor"/><path d="M22 22h20M32 17v20M22 44h20M23 36l8 8M31 36l-8 8" stroke="#fff" stroke-width="4" stroke-linecap="round"/>',
+      abc: '<rect x="9" y="14" width="46" height="36" rx="8" fill="currentColor"/><path d="M18 40l6-16 6 16M20.5 34h7M36 24v16h7a5 5 0 0 0 0-10h-7" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>',
+      science: '<path d="M25 10h14v8l12 22a9 9 0 0 1-8 14H21a9 9 0 0 1-8-14l12-22v-8Z" fill="currentColor"/><path d="M23 38h18M26 18h12" stroke="#fff" stroke-width="4" stroke-linecap="round"/><circle cx="27" cy="44" r="3" fill="#fff"/><circle cx="39" cy="45" r="2" fill="#fff"/>',
+      life: '<path d="M32 9 51 20v14c0 13-8 21-19 23-11-2-19-10-19-23V20L32 9Z" fill="currentColor"/><path d="M23 33l6 6 13-15" stroke="#143c3f" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>'
+    };
+
+    const state = {
+      player: "",
+      grade: "p1",
+      subject: "thai",
+      round: [],
+      currentIndex: 0,
+      score: 0,
+      streak: 0,
+      answered: false,
+      wrongItems: [],
+      roundStart: null,
+      timerId: null,
+      secondsLeft: 1800
+    };
+
+    const storageKey = "knowledgeIsland.v1";
+    const els = {
+      home: document.getElementById("homeScreen"),
+      mission: document.getElementById("missionScreen"),
+      game: document.getElementById("gameScreen"),
+      result: document.getElementById("resultScreen"),
+      playerName: document.getElementById("playerName"),
+      gradeSelect: document.getElementById("gradeSelect"),
+      startBtn: document.getElementById("startBtn"),
+      backHomeBtn: document.getElementById("backHomeBtn"),
+      missionPlayer: document.getElementById("missionPlayer"),
+      missionGrid: document.getElementById("missionGrid"),
+      activeGrade: document.getElementById("activeGrade"),
+      activeSubject: document.getElementById("activeSubject"),
+      missionTitle: document.getElementById("missionTitle"),
+      exitMissionBtn: document.getElementById("exitMissionBtn"),
+      questionCount: document.getElementById("questionCount"),
+      scoreText: document.getElementById("scoreText"),
+      progressFill: document.getElementById("progressFill"),
+      skillTag: document.getElementById("skillTag"),
+      questionText: document.getElementById("questionText"),
+      choices: document.getElementById("choices"),
+      feedback: document.getElementById("feedback"),
+      hintBtn: document.getElementById("hintBtn"),
+      nextBtn: document.getElementById("nextBtn"),
+      sideScore: document.getElementById("sideScore"),
+      sideStreak: document.getElementById("sideStreak"),
+      sideDone: document.getElementById("sideDone"),
+      sideAccuracy: document.getElementById("sideAccuracy"),
+      resultTitle: document.getElementById("resultTitle"),
+      scoreRing: document.getElementById("scoreRing"),
+      finalScore: document.getElementById("finalScore"),
+      resultNote: document.getElementById("resultNote"),
+      retryBtn: document.getElementById("retryBtn"),
+      chooseNewBtn: document.getElementById("chooseNewBtn"),
+      resetSeenBtn: document.getElementById("resetSeenBtn"),
+      reviewList: document.getElementById("reviewList"),
+      levelText: document.getElementById("levelText"),
+      starText: document.getElementById("starText"),
+      timerText: document.getElementById("timerText")
+    };
+
+    function q(id, prompt, choices, answer, explain, skill, hint) {
+      return { id, prompt, choices, answer, explain, skill, hint };
+    }
+
+    function loadProgress() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(storageKey));
+        return parsed && typeof parsed === "object" ? parsed : defaultProgress();
+      } catch {
+        return defaultProgress();
+      }
+    }
+
+    function defaultProgress() {
+      return {
+        player: "",
+        grade: "p1",
+        stars: 0,
+        xp: 0,
+        seen: {},
+        best: {}
+      };
+    }
+
+    function saveProgress(progress) {
+      localStorage.setItem(storageKey, JSON.stringify(progress));
+      renderTopbar();
+    }
+
+    let progress = loadProgress();
+
+    function renderTopbar() {
+      const level = Math.max(1, Math.floor((progress.xp || 0) / 120) + 1);
+      els.levelText.textContent = level;
+      els.starText.textContent = progress.stars || 0;
+    }
+
+    function showScreen(name) {
+      [els.home, els.mission, els.game, els.result].forEach(el => el.classList.remove("active"));
+      els[name].classList.add("active");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function renderMissions() {
+      els.missionPlayer.textContent = state.player || "นักเรียน";
+      els.missionGrid.innerHTML = "";
+      Object.entries(subjects).forEach(([key, subject]) => {
+        const all = questionBank[state.grade][key];
+        const seenCount = getSeenSet(state.grade, key).size;
+        const best = progress.best[`${state.grade}.${key}`] || 0;
+        const percent = Math.min(100, Math.round((seenCount / all.length) * 100));
+        const btn = document.createElement("button");
+        btn.className = "mission-card";
+        btn.type = "button";
+        btn.innerHTML = `
+          <div>
+            <div class="mission-icon" style="background:${subject.color}">
+              <svg viewBox="0 0 64 64" aria-hidden="true">${iconPaths[subject.icon]}</svg>
+            </div>
+          </div>
+          <div>
+            <strong>${subject.label}</strong>
+            <span>${subject.intro}</span>
+          </div>
+          <div class="mission-meta">
+            <span>ดีที่สุด ${best}/10</span>
+            <span class="mini-progress" aria-label="ความคืบหน้า"><i style="width:${percent}%"></i></span>
+          </div>
+        `;
+        btn.addEventListener("click", () => startMission(key));
+        els.missionGrid.appendChild(btn);
+      });
+    }
+
+    function getSeenSet(grade, subject) {
+      const key = `${grade}.${subject}`;
+      return new Set(progress.seen[key] || []);
+    }
+
+    function setSeen(grade, subject, ids) {
+      const key = `${grade}.${subject}`;
+      progress.seen[key] = Array.from(new Set([...(progress.seen[key] || []), ...ids]));
+      saveProgress(progress);
+    }
+
+    function startMission(subjectKey) {
+      state.subject = subjectKey;
+      state.round = buildRound(state.grade, subjectKey, 10);
+      state.currentIndex = 0;
+      state.score = 0;
+      state.streak = 0;
+      state.answered = false;
+      state.wrongItems = [];
+      state.roundStart = Date.now();
+      state.secondsLeft = 1800;
+      startTimer();
+      els.activeGrade.textContent = state.grade === "p1" ? "ป.1" : "ป.2";
+      els.activeSubject.textContent = subjects[subjectKey].label;
+      els.missionTitle.textContent = `${subjects[subjectKey].label}: ภารกิจ ${subjects[subjectKey].short}`;
+      showScreen("game");
+      renderQuestion();
+    }
+
+    function buildRound(grade, subjectKey, count) {
+      const all = questionBank[grade][subjectKey];
+      const seen = getSeenSet(grade, subjectKey);
+      const unused = shuffle(all.filter(item => !seen.has(item.id)));
+      const backup = shuffle(all);
+      const selected = [];
+      [...unused, ...backup].forEach(item => {
+        if (selected.length < count && !selected.find(existing => existing.id === item.id)) {
+          selected.push(item);
+        }
+      });
+      return selected;
+    }
+
+    function renderQuestion() {
+      const item = state.round[state.currentIndex];
+      state.answered = false;
+      els.nextBtn.disabled = true;
+      els.feedback.classList.remove("show");
+      els.feedback.innerHTML = "";
+      els.hintBtn.disabled = false;
+      els.questionCount.textContent = `ข้อ ${state.currentIndex + 1}/${state.round.length}`;
+      els.scoreText.textContent = state.score;
+      els.skillTag.textContent = item.skill;
+      els.questionText.textContent = item.prompt;
+      els.progressFill.style.width = `${(state.currentIndex / state.round.length) * 100}%`;
+      els.choices.innerHTML = "";
+      item.choices.forEach((choice, index) => {
+        const btn = document.createElement("button");
+        btn.className = "choice-btn";
+        btn.type = "button";
+        btn.textContent = choice;
+        btn.addEventListener("click", () => answerQuestion(index));
+        els.choices.appendChild(btn);
+      });
+      renderSideStats();
+    }
+
+    function answerQuestion(choiceIndex) {
+      if (state.answered) return;
+      state.answered = true;
+      const item = state.round[state.currentIndex];
+      const correct = choiceIndex === item.answer;
+      const buttons = Array.from(els.choices.children);
+      buttons.forEach((btn, index) => {
+        btn.disabled = true;
+        if (index === item.answer) btn.classList.add("correct");
+        if (index === choiceIndex && !correct) btn.classList.add("wrong");
+      });
+      if (correct) {
+        state.score += 1;
+        state.streak += 1;
+      } else {
+        state.streak = 0;
+        state.wrongItems.push({
+          prompt: item.prompt,
+          selected: item.choices[choiceIndex],
+          correct: item.choices[item.answer],
+          explain: item.explain
+        });
+      }
+      els.feedback.innerHTML = correct
+        ? `<strong>ตอบถูก</strong>${item.explain}`
+        : `<strong>ยังไม่ใช่คำตอบนี้</strong>คำตอบที่ถูกคือ “${item.choices[item.answer]}” เพราะ ${item.explain}`;
+      els.feedback.classList.add("show");
+      els.nextBtn.disabled = false;
+      els.hintBtn.disabled = true;
+      renderSideStats();
+    }
+
+    function renderSideStats() {
+      const done = state.currentIndex + (state.answered ? 1 : 0);
+      const accuracy = done ? Math.round((state.score / done) * 100) : 0;
+      els.sideScore.textContent = state.score;
+      els.sideStreak.textContent = state.streak;
+      els.sideDone.textContent = done;
+      els.sideAccuracy.textContent = `${accuracy}%`;
+    }
+
+    function nextQuestion() {
+      if (state.currentIndex < state.round.length - 1) {
+        state.currentIndex += 1;
+        renderQuestion();
+        return;
+      }
+      finishMission();
+    }
+
+    function finishMission() {
+      stopTimer();
+      els.progressFill.style.width = "100%";
+      const ids = state.round.map(item => item.id);
+      setSeen(state.grade, state.subject, ids);
+      const bestKey = `${state.grade}.${state.subject}`;
+      progress.best[bestKey] = Math.max(progress.best[bestKey] || 0, state.score);
+      const earnedStars = calculateStars(state.score);
+      progress.stars = (progress.stars || 0) + earnedStars;
+      progress.xp = (progress.xp || 0) + state.score * 15 + earnedStars * 10;
+      saveProgress(progress);
+      renderResult(earnedStars);
+      showScreen("result");
+    }
+
+    function calculateStars(score) {
+      if (score >= 9) return 3;
+      if (score >= 7) return 2;
+      if (score >= 5) return 1;
+      return 0;
+    }
+
+    function renderResult(earnedStars) {
+      const score = state.score;
+      const percent = Math.round((score / state.round.length) * 100);
+      els.finalScore.textContent = `${score}/${state.round.length}`;
+      els.scoreRing.style.setProperty("--score-deg", `${percent * 3.6}deg`);
+      els.resultTitle.textContent = score >= 8 ? "ผ่านภารกิจได้ยอดเยี่ยม" : score >= 5 ? "ผ่านแล้ว แต่ยังมีจุดให้ซ้อม" : "รอบนี้ควรทบทวนซ้ำ";
+      els.resultNote.textContent = `ได้ ${earnedStars} ดาวจากภารกิจ ${subjects[state.subject].label} ความแม่นยำ ${percent}% จุดสำคัญคืออ่านโจทย์ให้จบก่อนเลือกคำตอบ และกลับไปดูข้อที่พลาดด้านล่าง`;
+      els.reviewList.innerHTML = "";
+      if (!state.wrongItems.length) {
+        els.reviewList.innerHTML = `<div class="review-item"><strong>ไม่มีข้อที่ผิดในรอบนี้</strong><br>ต่อยอดได้โดยให้เด็กอธิบายวิธีคิดของตัวเองทีละข้อ</div>`;
+        return;
+      }
+      state.wrongItems.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = "review-item";
+        div.innerHTML = `<b>ข้อที่ควรทบทวน ${index + 1}</b><br>${item.prompt}<br>ตอบว่า “${item.selected}” คำตอบที่ถูกคือ “${item.correct}”<br>${item.explain}`;
+        els.reviewList.appendChild(div);
+      });
+    }
+
+    function showHint() {
+      const item = state.round[state.currentIndex];
+      els.feedback.innerHTML = `<strong>คำใบ้</strong>${item.hint}`;
+      els.feedback.classList.add("show");
+      els.hintBtn.disabled = true;
+    }
+
+    function startTimer() {
+      stopTimer();
+      updateTimerText();
+      state.timerId = window.setInterval(() => {
+        state.secondsLeft -= 1;
+        updateTimerText();
+        if (state.secondsLeft <= 0) {
+          stopTimer();
+          els.feedback.innerHTML = "<strong>ถึงเวลาพักสายตา</strong>ครบ 30 นาทีแล้ว ควรพักก่อนแล้วค่อยกลับมาเล่นต่อ";
+          els.feedback.classList.add("show");
+          Array.from(els.choices.children).forEach(btn => btn.disabled = true);
+          els.nextBtn.disabled = false;
+        }
+      }, 1000);
+    }
+
+    function stopTimer() {
+      if (state.timerId) window.clearInterval(state.timerId);
+      state.timerId = null;
+    }
+
+    function updateTimerText() {
+      const min = Math.max(0, Math.floor(state.secondsLeft / 60));
+      const sec = Math.max(0, state.secondsLeft % 60);
+      els.timerText.textContent = `${String(min).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
+    }
+
+    function shuffle(items) {
+      const arr = [...items];
+      for (let i = arr.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function init() {
+      els.playerName.value = progress.player || "";
+      els.gradeSelect.value = progress.grade || "p1";
+      state.player = progress.player || "";
+      state.grade = progress.grade || "p1";
+      renderTopbar();
+      updateTimerText();
+
+      els.startBtn.addEventListener("click", () => {
+        state.player = els.playerName.value.trim() || "นักเรียน";
+        state.grade = els.gradeSelect.value;
+        progress.player = state.player;
+        progress.grade = state.grade;
+        saveProgress(progress);
+        renderMissions();
+        showScreen("mission");
+      });
+
+      els.backHomeBtn.addEventListener("click", () => showScreen("home"));
+      els.exitMissionBtn.addEventListener("click", () => {
+        stopTimer();
+        renderMissions();
+        showScreen("mission");
+      });
+      els.nextBtn.addEventListener("click", nextQuestion);
+      els.hintBtn.addEventListener("click", showHint);
+      els.retryBtn.addEventListener("click", () => startMission(state.subject));
+      els.chooseNewBtn.addEventListener("click", () => {
+        renderMissions();
+        showScreen("mission");
+      });
+      els.resetSeenBtn.addEventListener("click", () => {
+        const key = `${state.grade}.${state.subject}`;
+        progress.seen[key] = [];
+        saveProgress(progress);
+        renderMissions();
+        showScreen("mission");
+      });
+    }
+
+    init();
+  </script>
+</body>
+</html>
